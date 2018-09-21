@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -24,6 +26,12 @@ class Quote(object):
             self.author,
         )
 
+    def json(self):
+        return json.dumps({
+            'text': self.text,
+            'author': self.author,
+        })
+
 
 def get_url(year, month, page):
     month = str(month) if month > 9 else '0{}'.format(month) # TODO: is this necessary?
@@ -38,8 +46,8 @@ def get_quotes(year, month, page):
     url = get_url(year, month, page)
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'html.parser')
-    quotes = [x.text for x in soup.find_all('blockquote')]
-    by = [x.text for x in soup.find_all('cite')]
+    quotes = [x.text.strip() for x in soup.find_all('blockquote')]
+    by = [x.text.strip() for x in soup.find_all('cite')]
     assert len(quotes) == len(by)
     for (text, author) in zip(quotes, by):
         q = Quote(text, author)
