@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 
 import json
+from dateutil import rrule
+from datetime import date, datetime
 
 import requests
 from bs4 import BeautifulSoup
+
+
+START = date(2015, 1, 1)
+END = date(2018, 9, 1)
+PAGES = 31 # TODO: Do we need to go all the way up to 31? Can we skip ahead every 4? (e.g. 1, 5, 9)
 
 
 class Quote(object):
@@ -54,10 +61,24 @@ def get_quotes(year, month, page):
         yield q
 
 
+def generate_urls(start=None, end=None):
+    start = start or START
+    end = end or END
+
+    for dt in rrule.rrule(rrule.MONTHLY, dtstart=start, until=end):
+        for page in range(1, PAGES + 1):
+            yield "{year}/{month:02d}/{page:02d}".format(
+                year=dt.year,
+                month=dt.month,
+                page=page,
+            )
+
+
 def main():
     # 2015/01/P20
     from pprint import pprint
-    pprint(tuple(get_quotes(year=2015, month=1, page=20)))
+    #pprint(tuple(get_quotes(year=2015, month=1, page=20)))
+    pprint(tuple(generate_urls()))
 
 
 if __name__ == '__main__':
