@@ -19,6 +19,17 @@ class Quote(object):
         self.text = text
         self.author = author
 
+    def __eq__(self, other):
+        return (
+            self.text == other.text
+            and self.author == other.author
+        )
+
+    def __lt__(self, other):
+        l_key = (self.text, self.author)
+        r_key = (other.text, other.author)
+        return l_key < r_key
+
     def __hash__(self):
         return hash(self.text + self.author)
 
@@ -29,10 +40,7 @@ class Quote(object):
         )
 
     def __repr__(self):
-        return '{}... - {}'.format(
-            self.text[:40],
-            self.author,
-        )
+        return self.text[:20]
 
     def json(self):
         return json.dumps({
@@ -42,8 +50,7 @@ class Quote(object):
 
 
 def get_url(year, month, page):
-    month = str(month) if month > 9 else '0{}'.format(month) # TODO: is this necessary?
-    return 'https://www.dailyzen.com/quotes/archive/{year}/{month}/P{page}'.format(
+    return 'https://www.dailyzen.com/quotes/archive/{year}/{month:02d}/P{page:02d}'.format(
         year=year,
         month=month,
         page=page,
@@ -70,7 +77,7 @@ def generate_urls(start=None, end=None):
 
     for dt in rrule.rrule(rrule.MONTHLY, dtstart=start, until=end):
         for page in range(1, PAGES + 1):
-            yield "{year}/{month:02d}/{page:02d}".format(
+            yield get_url(
                 year=dt.year,
                 month=dt.month,
                 page=page,
@@ -78,12 +85,12 @@ def generate_urls(start=None, end=None):
 
 
 def main(*args, **kwargs):
-    # 2015/01/P20
     url = get_url(*args, **kwargs)
     soup = soup_from_url(url)
     return get_quotes(soup)
 
 
 if __name__ == '__main__':
+    # Example page to scrape -> https://www.dailyzen.com/quotes/archive/2015/01/P20
     pprint(tuple(main(year=2015, month=1, page=20)))
     pprint(tuple(generate_urls())[:20])
