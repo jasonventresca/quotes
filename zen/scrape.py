@@ -3,6 +3,7 @@
 import json
 from dateutil import rrule
 from datetime import date, datetime
+from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup
@@ -49,10 +50,12 @@ def get_url(year, month, page):
     )
 
 
-def get_quotes(year, month, page):
-    url = get_url(year, month, page)
+def soup_from_url(url):
     resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, 'html.parser')
+    return BeautifulSoup(resp.text, 'html.parser')
+
+
+def get_quotes(soup):
     quotes = [x.text.strip() for x in soup.find_all('blockquote')]
     by = [x.text.strip() for x in soup.find_all('cite')]
     assert len(quotes) == len(by)
@@ -74,12 +77,13 @@ def generate_urls(start=None, end=None):
             )
 
 
-def main():
+def main(*args, **kwargs):
     # 2015/01/P20
-    from pprint import pprint
-    #pprint(tuple(get_quotes(year=2015, month=1, page=20)))
-    pprint(tuple(generate_urls()))
+    url = get_url(*args, **kwargs)
+    soup = soup_from_url(url)
+    return get_quotes(soup)
 
 
 if __name__ == '__main__':
-    main()
+    pprint(tuple(main(year=2015, month=1, page=20)))
+    pprint(tuple(generate_urls())[:20])
