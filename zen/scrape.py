@@ -43,10 +43,14 @@ class Quote(object):
         return self.text[:20]
 
     def json(self):
-        return json.dumps({
-            'text': self.text,
-            'author': self.author,
-        })
+        return json.dumps(
+            {
+                'text': self.text,
+                'author': self.author,
+            },
+            indent=4,
+            sort_keys=True,
+        )
 
 
 def get_url(year, month, page):
@@ -64,9 +68,9 @@ def soup_from_url(url):
 
 def get_quotes(soup):
     quotes = [x.text.strip() for x in soup.find_all('blockquote')]
-    by = [x.text.strip() for x in soup.find_all('cite')]
-    assert len(quotes) == len(by)
-    for (text, author) in zip(quotes, by):
+    authors = [x.text.strip() for x in soup.find_all('cite')]
+    assert len(quotes) == len(authors)
+    for (text, author) in zip(quotes, authors):
         q = Quote(text, author)
         yield q
 
