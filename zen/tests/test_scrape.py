@@ -49,7 +49,3 @@ def test_dedup_quotes_across_adjacent_pages():
 
     observed = pformat(quotes_counter, indent=4)
     assert expected == observed
-
-
-if __name__ == '__main__':
-    test_quote_extractions()
