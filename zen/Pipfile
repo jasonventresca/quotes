@@ -9,7 +9,7 @@ requests = "*"
 ipython = "*"
 pytest = "*"
 python-dateutil = "*"
-flask-mail = "*"
+sendgrid = "*"
 
 [dev-packages]
 

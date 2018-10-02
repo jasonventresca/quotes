@@ -1,29 +1,53 @@
 #!/usr/bin/env python3
 
-from flask import Flask
-from flask_mail import Mail, Message
 import os
+import json
+from datetime import datetime
 
-CREDS = {}
+import sendgrid
+from sendgrid.helpers.mail import Email, Content, Mail
 
-def main():
-    app = Flask(__name__)
 
-    mail_settings = {
-        "MAIL_SERVER": 'smtp.gmail.com',
-        "MAIL_PORT": 465,
-        "MAIL_USE_TLS": False,
-        "MAIL_USE_SSL": True,
-        "MAIL_USERNAME": CREDS['gmail username'],
-        "MAIL_PASSWORD": CREDS['gmail password']
-    }
+CONFIG = None
+START_DATE = datetime(2018, 10, 2)
+NOW = datetime.now()
 
-    app.config.update(mail_settings)
-    mail = Mail(app)
+
+def main(msg_body, to_addr, from_addr=None):
+    from_addr = from_addr or CONFIG.get('FROM_ADDRESS')
+    sg = sendgrid.SendGridAPIClient(apikey=CONFIG.get('SENDGRID_API_KEY'))
+    from_email = Email(from_addr)
+    to_email = Email(to_addr)
+    subject = "~ zq @ {} ~".format(NOW.strftime('%Y-%m-%d'))
+    content = Content("text/plain", msg_body)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
 
 
 if __name__ == '__main__':
     with open('.secrets.json') as secrets_f:
-        CREDS = json.load(secrets_f)
+        CONFIG = json.load(secrets_f)
 
-    main()
+    with open('recipients.txt') as recip_f:
+        recipients = tuple(x.strip() for x in recip_f)
+
+    with open('all_quotes.json') as quotes_f:
+        quotes = json.load(quotes_f)
+
+    num_quotes = len(quotes)
+
+    days_elapsed = (NOW - START_DATE).days
+    idx = days_elapsed % num_quotes
+    chosen_quote = quotes[idx]
+    msg_body = '{quote}\n\n{author}'.format(
+        quote=chosen_quote['text'],
+        author=chosen_quote['author'],
+    )
+    print("DEBUG: msg_body = {}".format(msg_body))
+
+    for i, recip in enumerate(recipients):
+        print('{:3d} sending quote to: {}'.format(i+1, recip))
+        main(msg_body=msg_body, to_addr=recip)
