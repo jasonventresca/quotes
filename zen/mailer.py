@@ -28,9 +28,12 @@ def main(msg_body, to_addr, from_addr=None):
 
 
 if __name__ == '__main__':
+    # TODO: Install this repo and data files + secrets on ec2 box.
     with open('.secrets.json') as secrets_f:
         CONFIG = json.load(secrets_f)
 
+    # TODO: Pull recipients from Google Sheets/Forms.
+    # TODO: Create Google Form/Spreadsheet.
     with open('recipients.txt') as recip_f:
         recipients = tuple(x.strip() for x in recip_f)
 
