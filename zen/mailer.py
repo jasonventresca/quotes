@@ -18,7 +18,7 @@ def main(msg_body, to_addr, from_addr=None):
     sg = sendgrid.SendGridAPIClient(apikey=CONFIG.get('SENDGRID_API_KEY'))
     from_email = Email(from_addr)
     to_email = Email(to_addr)
-    subject = "~ zq @ {} ~".format(NOW.strftime('%Y-%m-%d'))
+    subject = "~ zen quote @ {} ~".format(NOW.strftime('%Y-%m-%d'))
     content = Content("text/plain", msg_body)
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
