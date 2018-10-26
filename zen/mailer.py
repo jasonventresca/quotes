@@ -37,6 +37,8 @@ if __name__ == '__main__':
     with open('recipients.txt') as recip_f:
         recipients = tuple(x.strip() for x in recip_f)
 
+    # TODO: Make the debug mode below an argparse option (-d).
+
     ## debug mode
     #recipients = ('jasonventresca@gmail.com',)
 
