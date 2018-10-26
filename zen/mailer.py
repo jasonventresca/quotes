@@ -37,6 +37,9 @@ if __name__ == '__main__':
     with open('recipients.txt') as recip_f:
         recipients = tuple(x.strip() for x in recip_f)
 
+    ## debug mode
+    #recipients = ('jasonventresca@gmail.com',)
+
     with open('all_quotes.json') as quotes_f:
         quotes = json.load(quotes_f)
 
