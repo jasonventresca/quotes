@@ -1,0 +1,7 @@
+beautifulsoup4
+ipython
+pip
+pytest
+python-dateutil
+requests
+sendgrid

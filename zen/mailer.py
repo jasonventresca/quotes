@@ -18,7 +18,7 @@ def main(msg_body, to_addr, from_addr=None):
     sg = sendgrid.SendGridAPIClient(apikey=CONFIG.get('SENDGRID_API_KEY'))
     from_email = Email(from_addr)
     to_email = Email(to_addr)
-    subject = "~ zq @ {} ~".format(NOW.strftime('%Y-%m-%d'))
+    subject = "~ zen quote @ {} ~".format(NOW.strftime('%Y-%m-%d'))
     content = Content("text/plain", msg_body)
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
@@ -36,6 +36,11 @@ if __name__ == '__main__':
     # TODO: Create Google Form/Spreadsheet.
     with open('recipients.txt') as recip_f:
         recipients = tuple(x.strip() for x in recip_f)
+
+    # TODO: Make the debug mode below an argparse option (-d).
+
+    ## debug mode
+    #recipients = ('jasonventresca@gmail.com',)
 
     with open('all_quotes.json') as quotes_f:
         quotes = json.load(quotes_f)
