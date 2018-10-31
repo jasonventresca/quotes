@@ -38,7 +38,8 @@ if __name__ == '__main__':
         recipients = tuple(x.strip() for x in recip_f)
 
     # TODO: Make the debug mode below an argparse option (-d).
-
+    # TODO: Don't push my email address to this public github repo!
+    #       This should be in a recipients-debug.txt file, or something ;)
     ## debug mode
     #recipients = ('jasonventresca@gmail.com',)
 

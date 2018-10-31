@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 
+# TODO: Add Google Signed Credentials JSON file to this list.
 CONF_FILES='
     .secrets.json
     recipients.txt

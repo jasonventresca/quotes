@@ -10,6 +10,8 @@ TODO:
     √ load Signed Credentials from .gdrive_creds.json
     √ adapt example from https://gspread.readthedocs.io/en/latest/oauth2.html
     - backup the credentials file! (Dropbox?)
+    - rename this module to something that can be imported elsewhere
+    - import this into mailer.py, and stop using recipients.txt!
 '''
 )
 
