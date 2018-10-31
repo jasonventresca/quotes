@@ -5,3 +5,6 @@ pytest
 python-dateutil
 requests
 sendgrid
+gspread
+oauth2client
+PyOpenSSL
