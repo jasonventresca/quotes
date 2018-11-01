@@ -4,7 +4,8 @@ set -eu
 # TODO: Add Google Signed Credentials JSON file to this list.
 CONF_FILES='
     .secrets.json
-    recipients.txt
+    .gdrive_creds.json
+    debug-recipients.txt
     all_quotes.json
 '
 
