@@ -40,18 +40,3 @@ class GoogleSheet(object):
     def call_book(self, func, *args, **kwargs):
         return getattr(self.book, func)(*args, **kwargs)
     '''
-
-
-print(
-'''
-TODO:
-    √ pipenv add gdrive (also add to requirements.txt)
-        √ also oauth2client + PyOpenSSL
-    √ load Signed Credentials from .gdrive_creds.json
-    √ adapt example from https://gspread.readthedocs.io/en/latest/oauth2.html
-    √ rename this module to something that can be imported elsewhere
-    √ import this into mailer.py, and stop using recipients.txt!
-    - deploy the changes to foodieland!
-    - backup the credentials file! (Dropbox?)
-'''
-)

@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eu
 
-# TODO: Add Google Signed Credentials JSON file to this list.
 CONF_FILES='
     .secrets.json
     .gdrive_creds.json
@@ -9,7 +8,7 @@ CONF_FILES='
     all_quotes.json
 '
 
-# TODO: ssh to foodieland, git pull the quotes repo, and pipenv install the requirements.txt
+echo "pulling the latest source code, and installing any required dependencies"
 ssh -o PermitLocalCommand=no foodieland '
     cd ~/quotes/zen &&
     git pull origin master &&

@@ -36,6 +36,7 @@ def get_subscribers():
     gs = GoogleSheet(
         book='zen_quotes',
         worksheet='subscribers',
+        # TODO: backup the credentials file! (Dropbox?)
         creds_filename=join(dirname(__file__), '.gdrive_creds.json'),
     )
 
@@ -102,7 +103,6 @@ if __name__ == '__main__':
     USE_DEBUG_RECIPIENTS = args.use_debug_recipients
     NO_SEND = args.no_send
 
-    # TODO: Install this repo and data files + secrets on ec2 box.
     with open('.secrets.json') as secrets_f:
         CONFIG = json.load(secrets_f)
 
